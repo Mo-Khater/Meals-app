@@ -8,6 +8,7 @@ class MealItemTrait extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Icon(
           icon,
@@ -16,7 +17,11 @@ class MealItemTrait extends StatelessWidget {
         const SizedBox(
           width: 3,
         ),
-        Text(label)
+        Text(
+          label,
+          style: const TextStyle(
+              fontSize: 13, fontWeight: FontWeight.bold, color: Colors.white),
+        )
       ],
     );
   }
