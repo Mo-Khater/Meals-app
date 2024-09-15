@@ -4,13 +4,14 @@ import 'package:meals/screens/meal_screen.dart';
 import 'package:meals/wedges/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  final String title;
+  final String? title;
   final List<Meal> meals;
-  const MealsScreen({super.key, required this.title, required this.meals});
+    final Function(Meal meal) onChangeFav;
+  const MealsScreen({super.key, required this.meals, this.title,required this.onChangeFav});
 
   void _displayMealInfo(BuildContext context, Meal meal) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => MealScreen(meal: meal),
+      builder: (ctx) => MealScreen(meal: meal,onChangeFav: onChangeFav,),
     ));
   }
 
@@ -50,9 +51,12 @@ class MealsScreen extends StatelessWidget {
         ),
       );
     }
+    if (title == null) {
+      return content;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(title),
+        title: Text(title!),
       ),
       body: content,
     );
