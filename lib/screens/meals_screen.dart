@@ -6,12 +6,11 @@ import 'package:meals/wedges/meal_item.dart';
 class MealsScreen extends StatelessWidget {
   final String? title;
   final List<Meal> meals;
-    final Function(Meal meal) onChangeFav;
-  const MealsScreen({super.key, required this.meals, this.title,required this.onChangeFav});
+  const MealsScreen({super.key, required this.meals, this.title});
 
   void _displayMealInfo(BuildContext context, Meal meal) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (ctx) => MealScreen(meal: meal,onChangeFav: onChangeFav,),
+      builder: (ctx) => MealScreen(meal: meal),
     ));
   }
 

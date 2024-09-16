@@ -6,9 +6,8 @@ import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/wedges/category_item.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  final Function(Meal meal) onChangeFav;
   final List<Meal>meals;
-  const CategoriesScreen({super.key,required this.onChangeFav,required this.meals});
+  const CategoriesScreen({super.key,required this.meals});
 
   void selectCategory(BuildContext context, CategoryModel category) {
     final filteredMeals = meals
@@ -17,7 +16,7 @@ class CategoriesScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) =>
-            MealsScreen(title: category.title, meals: filteredMeals,onChangeFav: onChangeFav,),
+            MealsScreen(title: category.title, meals: filteredMeals),
       ),
     );
   }
