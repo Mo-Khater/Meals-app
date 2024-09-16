@@ -1,35 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/providers/filter_provider.dart';
+class FilterScreen extends ConsumerWidget {
 
-enum Filter { glutenFree, lactoseFree, vegetarian, vegan }
-
-class FilterScreen extends StatefulWidget {
-  final Map<Filter, bool> selectedFilters;
-
-  const FilterScreen({super.key, required this.selectedFilters});
+  const FilterScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() {
-    return _FilterScreenState();
-  }
-}
+  Widget build(BuildContext context,WidgetRef ref) {
 
-class _FilterScreenState extends State<FilterScreen> {
-  bool switchState = false;
-  bool lactoseState = false;
-  bool vegeterianState = false;
-  bool veganState = false;
+    Map<Filter,bool>activeFilters=ref.watch(filterProvider);
 
-  @override
-  void initState() {
-    super.initState();
-    switchState = widget.selectedFilters[Filter.glutenFree]!;
-    lactoseState = widget.selectedFilters[Filter.lactoseFree]!;
-    vegeterianState = widget.selectedFilters[Filter.vegetarian]!;
-    veganState = widget.selectedFilters[Filter.vegan]!;
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,18 +19,7 @@ class _FilterScreenState extends State<FilterScreen> {
               ),
         ),
       ),
-      body: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) {
-          if (didPop) return;
-          Navigator.of(context).pop({
-            Filter.glutenFree: switchState,
-            Filter.lactoseFree: lactoseState,
-            Filter.vegetarian: vegeterianState,
-            Filter.vegan: veganState,
-          });
-        },
-        child: Column(
+      body: Column(
           children: [
             SwitchListTile(
               title: Text(
@@ -68,11 +37,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     .copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
               activeColor: Theme.of(context).colorScheme.primary,
-              value: switchState,
+              value: activeFilters[Filter.glutenFree]!,
               onChanged: (state) {
-                setState(() {
-                  switchState = state;
-                });
+                ref.read(filterProvider.notifier).changeFilter(Filter.glutenFree, state);
               },
             ),
             SwitchListTile(
@@ -91,11 +58,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     .copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
               activeColor: Theme.of(context).colorScheme.primary,
-              value: lactoseState,
+              value:  activeFilters[Filter.lactoseFree]!,
               onChanged: (state) {
-                setState(() {
-                  lactoseState = state;
-                });
+                ref.read(filterProvider.notifier).changeFilter(Filter.lactoseFree, state);
               },
             ),
             SwitchListTile(
@@ -114,11 +79,9 @@ class _FilterScreenState extends State<FilterScreen> {
                     .copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
               activeColor: Theme.of(context).colorScheme.primary,
-              value: veganState,
+              value:  activeFilters[Filter.vegan]!,
               onChanged: (state) {
-                setState(() {
-                  veganState = state;
-                });
+                ref.read(filterProvider.notifier).changeFilter(Filter.vegan, state);
               },
             ),
             SwitchListTile(
@@ -137,16 +100,13 @@ class _FilterScreenState extends State<FilterScreen> {
                     .copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
               activeColor: Theme.of(context).colorScheme.primary,
-              value: vegeterianState,
+              value:  activeFilters[Filter.vegetarian]!,
               onChanged: (state) {
-                setState(() {
-                  vegeterianState = state;
-                });
+                ref.read(filterProvider.notifier).changeFilter(Filter.vegetarian, state);
               },
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
