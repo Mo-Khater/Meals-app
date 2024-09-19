@@ -32,12 +32,15 @@ class MealItem extends StatelessWidget {
         child: Stack(
           // ignore the shape i put on the card
           children: [
-            FadeInImage(
-              placeholder: MemoryImage(kTransparentImage),
-              image: NetworkImage(meal.imageUrl),
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                placeholder: MemoryImage(kTransparentImage),
+                image: NetworkImage(meal.imageUrl),
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
             Positioned(
               right: 0,

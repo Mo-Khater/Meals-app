@@ -16,32 +16,45 @@ class MealScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-              onPressed: () {
-                bool addMeal = ref
-                    .read(favMealsProvider.notifier)
-                    .toggleFavMealState(meal);
+            onPressed: () {
+              bool addMeal =
+                  ref.read(favMealsProvider.notifier).toggleFavMealState(meal);
 
-                if (addMeal) {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('add meal to Favorites')));
-                } else {
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('remove meal from Favorites')));
-                }
-              },
-              icon: Icon(isFav ? Icons.star : Icons.star_border))
+              if (addMeal) {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('add meal to Favorites')));
+              } else {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('remove meal from Favorites')));
+              }
+            },
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => RotationTransition(
+                turns: Tween(begin: .8, end: 1.0).animate(animation),
+                child: child,
+              ),
+              child: Icon(
+                isFav ? Icons.star : Icons.star_border,
+                key: ValueKey(isFav),
+              ),
+            ),
+          )
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image(
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                image: NetworkImage(meal.imageUrl)),
+            Hero(
+              tag: meal.id,
+              child: Image(
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  image: NetworkImage(meal.imageUrl)),
+            ),
             const SizedBox(
               height: 10,
             ),
